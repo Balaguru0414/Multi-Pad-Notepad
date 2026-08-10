@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notepad - Offline Multiple Text Editor</title>
+    <meta name="description" content="A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.">
+    <meta name="keywords" content="notepad, text editor, offline notepad, multi pad notepad, notes app, online notepad, privacy text editor">
+    <meta name="author" content="Balaguru">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://balaguru.in/notepad/">
+    <meta name="theme-color" content="#0e1015">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://balaguru.in/notepad/">
+    <meta property="og:title" content="Notepad - Offline Multiple Text Editor">
+    <meta property="og:description" content="A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.">
+    <meta property="og:image" content="assets/logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://balaguru.in/notepad/">
+    <meta property="twitter:title" content="Notepad - Offline Multiple Text Editor">
+    <meta property="twitter:description" content="A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.">
+    <meta property="twitter:image" content="assets/logo.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Notepad - Offline Multiple Text Editor",
+      "url": "https://balaguru.in/notepad/",
+      "description": "A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "author": {
+        "@type": "Person",
+        "name": "Balaguru",
+        "url": "https://balaguru.in/"
+      }
+    }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0e1015',
+                        darkHeader: '#14171f',
+                        darkSidebar: '#11131a',
+                        darkCard: '#1a1d26',
+                        darkBorder: '#272b38',
+                        accentBlue: '#3b82f6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Favicon & Website Icon -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-darkBg text-gray-200 font-sans h-screen flex flex-col overflow-hidden antialiased select-none selection:bg-blue-500 selection:text-white">
+
+    <!-- Top Navigation / Toolbar -->
+    <header class="bg-darkHeader border-b border-darkBorder h-14 px-2 sm:px-4 flex items-center justify-between shrink-0 select-none z-50">
+        <!-- Left Side: App Brand Logo + Sidebar Toggle + Title / Notepad Selector -->
+        <div class="flex items-center space-x-1 sm:space-x-2 min-w-0 flex-1 sm:flex-initial">
+            <!-- Website App Logo -->
+            <div class="flex items-center space-x-1.5 shrink-0 mr-0.5 sm:mr-1">
+                <img src="assets/logo.png" alt="Notepad Logo" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg shadow-md border border-darkBorder shrink-0 object-cover hover:scale-105 transition-transform">
+                <span class="font-bold text-sm text-white tracking-wide hidden lg:inline-block">Notepad</span>
+            </div>
+
+            <button id="toggleSidebarBtn" title="Toggle Sidebar (Ctrl+B)" class="p-1.5 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors shrink-0">
+                <i data-lucide="panel-left" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+            
+            <div class="h-4 sm:h-5 w-[1px] bg-darkBorder mx-0.5 sm:mx-1 shrink-0"></div>
+
+            <!-- Note Selector Dropdown Container -->
+            <div class="relative min-w-0 flex-1 sm:flex-initial" id="noteSelectorContainer">
+                <button id="noteSelectorBtn" class="flex items-center justify-between space-x-1 px-2 sm:px-3 py-1.5 bg-darkCard hover:bg-darkBorder border border-darkBorder rounded-lg text-xs sm:text-sm font-medium transition-colors text-white w-full max-w-[110px] min-[360px]:max-w-[145px] min-[440px]:max-w-[200px] sm:max-w-[280px]">
+                    <span id="currentNoteTitleDisplay" class="truncate">Untitled Notepad</span>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 shrink-0 ml-0.5"></i>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="noteDropdownMenu" class="hidden absolute top-full left-0 mt-1.5 w-72 max-w-[90vw] bg-darkCard border border-darkBorder rounded-xl shadow-2xl z-50 overflow-hidden py-1">
+                    <div class="px-3 py-2 border-b border-darkBorder flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Rename Current Notepad</span>
+                            <button id="dropdownNewNoteBtn" class="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> New
+                            </button>
+                        </div>
+                        <input type="text" id="noteTitleInput" class="w-full bg-darkBg border border-darkBorder focus:border-blue-500 px-2.5 py-1 rounded text-xs text-white focus:outline-none transition-colors" placeholder="Type new title...">
+                    </div>
+                    <div class="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase tracking-wider bg-darkHeader/50 border-b border-darkBorder/40">
+                        Switch Notepad
+                    </div>
+                    <div id="dropdownNoteList" class="max-h-60 overflow-y-auto py-1 divide-y divide-darkBorder/30">
+                        <!-- Dynamic note items rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Tools & Actions -->
+        <div class="flex items-center space-x-0.5 sm:space-x-1.5 shrink-0 ml-1">
+            <!-- New Note Button -->
+            <button id="newNoteBtn" title="New Notepad (Ctrl+N)" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors flex items-center gap-1 text-xs sm:text-sm font-medium">
+                <i data-lucide="square-plus" class="w-4 h-4 sm:w-5 sm:h-5 text-blue-400"></i>
+                <span class="hidden md:inline">New</span>
+            </button>
+
+            <!-- Duplicate Note Button -->
+            <button id="duplicateNoteBtn" title="Duplicate Note" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors hidden min-[540px]:block">
+                <i data-lucide="copy-plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+
+            <!-- Delete Note Button -->
+            <button id="deleteNoteBtn" title="Delete Notepad" class="p-1 sm:p-2 text-gray-400 hover:text-red-400 hover:bg-darkBorder rounded-lg transition-colors">
+                <i data-lucide="trash-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+
+            <div class="h-4 sm:h-5 w-[1px] bg-darkBorder mx-0.5"></div>
+
+            <!-- Copy Text Button -->
+            <button id="copyTextBtn" title="Copy Plain Text to Clipboard" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors relative">
+                <i data-lucide="copy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                <span id="copyToast" class="hidden absolute -bottom-8 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded shadow whitespace-nowrap z-50">Copied!</span>
+            </button>
+
+            <!-- Download Button -->
+            <button id="downloadBtn" title="Download TXT" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors hidden min-[400px]:block">
+                <i data-lucide="download" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+
+            <div class="h-4 sm:h-5 w-[1px] bg-darkBorder mx-0.5 hidden min-[400px]:block"></div>
+
+            <!-- Search & Replace Toggle -->
+            <button id="toggleSearchBtn" title="Find & Replace (Ctrl+F)" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors">
+                <i data-lucide="search" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+
+            <!-- Settings Toggle -->
+            <button id="toggleSettingsBtn" title="Settings (Font, Size, Spacing)" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors">
+                <i data-lucide="settings" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+            </button>
+
+            <!-- Light / Dark Theme Toggle Button -->
+            <button id="themeToggleBtn" title="Toggle Light / Dark Mode" class="p-1 sm:p-2 text-amber-400 hover:bg-darkBorder rounded-lg transition-all transform active:scale-95 group relative flex items-center justify-center">
+                <i data-lucide="sun" id="themeIconSun" class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-500 hidden dark:block group-hover:rotate-45 text-amber-300"></i>
+                <i data-lucide="moon" id="themeIconMoon" class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-500 block dark:hidden group-hover:-rotate-45 text-indigo-400"></i>
+            </button>
+
+            <!-- Fullscreen Toggle -->
+            <button id="toggleFullscreenBtn" title="Toggle Fullscreen" class="p-1 sm:p-2 text-gray-400 hover:text-white hover:bg-darkBorder rounded-lg transition-colors hidden sm:block">
+                <i data-lucide="maximize-2" class="w-4 h-4 sm:w-5 sm:h-5" id="fullscreenIcon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- VS Code Style Floating Find & Replace Widget -->
+    <div id="searchBar" class="hidden absolute top-16 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-8 w-[94%] sm:w-[92%] max-w-md bg-darkCard/95 backdrop-blur-md border border-darkBorder rounded-xl shadow-2xl z-[55] p-2.5 flex flex-col gap-2 animate-fadeIn select-none">
+        <!-- Row 1: Find Input + Toggle Actions + Status + Arrows + Close -->
+        <div class="flex items-center gap-1.5">
+            <!-- Expand/Collapse Replace Drawer Arrow -->
+            <button id="toggleReplaceDrawerBtn" title="Toggle Replace Row" class="p-1 text-gray-400 hover:text-white rounded hover:bg-darkBorder transition-colors shrink-0">
+                <i data-lucide="chevron-right" id="replaceDrawerIcon" class="w-3.5 h-3.5 transition-transform duration-200"></i>
+            </button>
+
+            <!-- Find Input Container with Match Options (Aa, ab) -->
+            <div class="flex-1 flex items-center bg-darkBg border border-darkBorder rounded-lg px-2 py-1 focus-within:border-blue-500 transition-colors">
+                <input type="text" id="searchInput" placeholder="Find..." class="bg-transparent text-white focus:outline-none w-full text-xs">
+                <div class="flex items-center gap-0.5 text-[10px] font-mono shrink-0 ml-1">
+                    <button id="matchCaseBtn" title="Match Case (Aa)" class="px-1 py-0.5 rounded text-gray-400 hover:text-white hover:bg-darkBorder transition-colors">Aa</button>
+                    <button id="matchWordBtn" title="Match Whole Word (ab)" class="px-1 py-0.5 rounded text-gray-400 hover:text-white hover:bg-darkBorder transition-colors">ab</button>
+                </div>
+            </div>
+
+            <!-- Search Results Status (e.g. 1 of 5 or No results) -->
+            <span id="searchStatusText" class="text-[10px] text-gray-400 shrink-0 font-mono px-1">0 results</span>
+
+            <!-- Nav Match Arrows -->
+            <button id="prevMatchBtn" title="Previous Match (Shift+Enter)" class="p-1 text-gray-400 hover:text-white rounded hover:bg-darkBorder shrink-0">
+                <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+            </button>
+            <button id="nextMatchBtn" title="Next Match (Enter)" class="p-1 text-gray-400 hover:text-white rounded hover:bg-darkBorder shrink-0">
+                <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+            </button>
+
+            <!-- Close Widget -->
+            <button id="closeSearchBtn" title="Close (Escape)" class="p-1 text-gray-400 hover:text-white rounded hover:bg-darkBorder shrink-0">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+        </div>
+
+        <!-- Row 2: Replace Input & Action Buttons (Expandable) -->
+        <div id="replaceRow" class="hidden flex items-center gap-1.5 pt-1.5 border-t border-darkBorder/40">
+            <div class="flex-1 flex items-center bg-darkBg border border-darkBorder rounded-lg px-2 py-1 focus-within:border-blue-500 transition-colors">
+                <input type="text" id="replaceInput" placeholder="Replace..." class="bg-transparent text-white focus:outline-none w-full text-xs">
+            </div>
+            <button id="replaceBtn" title="Replace Next" class="p-1.5 text-gray-300 hover:text-white bg-darkBg hover:bg-darkBorder border border-darkBorder rounded-lg text-xs flex items-center gap-1 font-medium transition-colors shrink-0">
+                <i data-lucide="replace" class="w-3.5 h-3.5"></i>
+            </button>
+            <button id="replaceAllBtn" title="Replace All" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold transition-colors shrink-0">
+                All
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <div class="flex-1 flex overflow-hidden relative">
+
+        <!-- Mobile Sidebar Backdrop Overlay -->
+        <div id="sidebarBackdrop" class="hidden fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-xs transition-opacity duration-300 opacity-0"></div>
+
+        <!-- Left Sidebar: Notepad List -->
+        <aside id="sidebar" class="w-72 sm:w-64 bg-darkSidebar border-r border-darkBorder flex flex-col transition-all duration-300 shrink-0 z-40 fixed md:relative inset-y-0 left-0 h-full md:h-auto shadow-2xl md:shadow-none">
+            <!-- Sidebar Header -->
+            <div class="p-3 border-b border-darkBorder flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="notebook-tabs" class="w-5 h-5 text-blue-400"></i>
+                    <span class="text-sm font-semibold text-gray-200">Notepads (<span id="noteCountBadge">0</span>)</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button id="sidebarNewBtn" title="Create New Note" class="p-1 text-gray-400 hover:text-white hover:bg-darkCard rounded transition-colors">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                    </button>
+                    <!-- Close button visible on mobile -->
+                    <button id="closeSidebarMobileBtn" title="Close Sidebar" class="p-1 text-gray-400 hover:text-white hover:bg-darkCard rounded transition-colors md:hidden">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Notes Input -->
+            <div class="p-2 border-b border-darkBorder/50">
+                <div class="flex items-center bg-darkBg border border-darkBorder rounded-lg px-2.5 py-1 text-xs">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 mr-2 shrink-0"></i>
+                    <input type="text" id="sidebarSearchInput" placeholder="Filter notepads..." class="bg-transparent text-gray-200 focus:outline-none w-full">
+                </div>
+            </div>
+
+            <!-- Notes List -->
+            <div id="sidebarNoteList" class="flex-1 overflow-y-auto p-2 space-y-1">
+                <!-- Sidebar note item template rendered dynamically -->
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="p-3 border-t border-darkBorder flex items-center justify-between text-xs text-gray-500">
+                <button id="exportAllBtn" class="hover:text-gray-300 flex items-center gap-1 transition-colors">
+                    <i data-lucide="folder-output" class="w-3.5 h-3.5"></i> Export All
+                </button>
+                <button id="clearAllBtn" class="hover:text-red-400 flex items-center gap-1 transition-colors">
+                    <i data-lucide="trash" class="w-3.5 h-3.5"></i> Clear All
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Editor View -->
+        <main class="flex-1 flex flex-col bg-darkBg relative overflow-hidden min-w-0">
+
+            <!-- Formatting Quick Bar (Mode Switcher, Font size, Rich controls) -->
+            <div class="bg-darkHeader/50 border-b border-darkBorder/50 px-2 sm:px-4 py-1.5 flex items-center justify-between text-xs text-gray-400 select-none overflow-x-auto no-scrollbar gap-2 shrink-0">
+                <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                    <!-- Mode Switcher Segmented Control -->
+                    <div class="inline-flex rounded-lg p-0.5 bg-darkBg border border-darkBorder text-[11px] shrink-0">
+                        <button id="modePlainBtn" class="px-2 sm:px-2.5 py-0.5 rounded-md font-medium transition-all text-gray-400 hover:text-white">
+                            <span class="sm:hidden">Plain</span><span class="hidden sm:inline">Plain Text</span>
+                        </button>
+                        <button id="modeRichBtn" class="px-2 sm:px-2.5 py-0.5 rounded-md font-medium transition-all bg-blue-600 text-white shadow-xs">
+                            <span class="sm:hidden">Rich</span><span class="hidden sm:inline">Rich Formatted</span>
+                        </button>
+                    </div>
+
+                    <!-- Rich Text Format Controls (Bold, Italic, Underline) -->
+                    <div id="richToolbarControls" class="flex items-center gap-0.5 sm:gap-1 shrink-0 border-l border-darkBorder pl-1.5 sm:pl-2">
+                        <button id="richBoldBtn" title="Bold (Ctrl+B)" class="p-1 hover:text-white hover:bg-darkCard rounded text-xs font-bold w-6 h-6 flex items-center justify-center">B</button>
+                        <button id="richItalicBtn" title="Italic (Ctrl+I)" class="p-1 hover:text-white hover:bg-darkCard rounded text-xs italic font-serif w-6 h-6 flex items-center justify-center">I</button>
+                        <button id="richUnderlineBtn" title="Underline (Ctrl+U)" class="p-1 hover:text-white hover:bg-darkCard rounded text-xs underline font-semibold w-6 h-6 flex items-center justify-center">U</button>
+                    </div>
+
+                    <button id="cleanFormatBtn" class="flex items-center gap-1 text-blue-400 hover:text-blue-300 bg-blue-950/40 border border-blue-800/40 px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-medium shrink-0 transition-colors" title="Clean extra spaces and structure paragraphs">
+                        <i data-lucide="sparkles" class="w-3 h-3"></i> <span class="hidden min-[380px]:inline">Clean</span><span class="hidden sm:inline"> Format</span>
+                    </button>
+
+                    <span id="saveStatus" class="text-gray-500 flex items-center gap-1 truncate text-[10px] sm:text-[11px] shrink-0">
+                        <i data-lucide="check" class="w-3 h-3 text-gray-400 shrink-0"></i> <span class="hidden md:inline">Saved to Local Storage</span><span class="hidden min-[420px]:inline md:hidden">Saved</span>
+                    </span>
+                </div>
+                <div class="flex items-center gap-0.5 sm:gap-2 shrink-0 ml-auto">
+                    <button id="quickFontMinus" class="p-1 hover:text-white hover:bg-darkCard rounded text-xs font-bold" title="Decrease font size">-</button>
+                    <span id="fontSizeDisplay" class="font-mono text-gray-300 text-xs px-0.5">16px</span>
+                    <button id="quickFontPlus" class="p-1 hover:text-white hover:bg-darkCard rounded text-xs font-bold" title="Increase font size">+</button>
+                </div>
+            </div>
+
+            <!-- Text Area Container -->
+            <div class="flex-1 relative px-3 sm:px-6 md:px-8 overflow-hidden flex flex-col justify-center items-center">
+                <div class="w-full max-w-5xl h-full flex flex-col relative border-x border-gray-200 dark:border-gray-800">
+                    <!-- Text Area (Plain Text Editor) -->
+                    <textarea 
+                        id="editor" 
+                        class="w-full h-full bg-transparent text-gray-100 placeholder-gray-600 focus:outline-none resize-none overflow-y-auto leading-relaxed border-none font-sans text-base transition-all select-text pb-14 sm:pb-8  px-5 hidden"
+                        placeholder="Start typing plain text here..."
+                        spellcheck="false"
+                    ></textarea>
+
+                    <!-- Rich Text Editor (contenteditable) -->
+                    <div 
+                        id="richEditor" 
+                        contenteditable="true"
+                        class="w-full h-full bg-transparent text-gray-100 focus:outline-none overflow-y-auto leading-relaxed font-sans text-base transition-all select-text pb-14 sm:pb-8 px-5"
+                        placeholder="Paste or type rich formatted text here... (headings, bold text, sizes and bullet points)"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- Floating Bottom Stats Bar -->
+            <div class="absolute bottom-2 right-2 sm:bottom-4 sm:right-6 z-10">
+                <div class="bg-darkCard/90 backdrop-blur-md border border-darkBorder px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-lg text-[11px] sm:text-xs font-medium text-gray-300 flex items-center gap-1.5 sm:gap-3 select-none border-darkBorder/60">
+                    <span class="flex items-center gap-1">
+                        <span id="charCount" class="font-semibold text-white">0</span> <span class="hidden min-[400px]:inline">chars</span><span class="min-[400px]:hidden">c</span>
+                    </span>
+                    <span class="text-gray-600">•</span>
+                    <span class="flex items-center gap-1">
+                        <span id="wordCount" class="font-semibold text-white">0</span> <span class="hidden min-[400px]:inline">words</span><span class="min-[400px]:hidden">w</span>
+                    </span>
+                    <span class="text-gray-600">•</span>
+                    <span class="flex items-center gap-1">
+                        <span id="lineCount" class="font-semibold text-white">0</span> <span class="hidden min-[400px]:inline">lines</span><span class="min-[400px]:hidden">l</span>
+                    </span>
+                    <span class="text-gray-600 hidden sm:inline">•</span>
+                    <span class="hidden sm:flex items-center gap-1 text-gray-400" title="Estimated reading time">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i> <span id="readTime">0 min read</span>
+                    </span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60] animate-fadeIn p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+            <div class="px-5 py-4 border-b border-darkBorder flex items-center justify-between">
+                <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-5 h-5 text-blue-400"></i> Editor Preferences
+                </h3>
+                <button id="closeSettingsBtn" class="text-gray-400 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-4 text-sm">
+                <!-- Font Family -->
+                <div>
+                    <label class="block text-gray-400 text-xs font-semibold mb-1.5 uppercase tracking-wider">Font Family</label>
+                    <select id="fontFamilySelect" class="w-full bg-darkBg border border-darkBorder rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                        <option value="font-sans">Sans-Serif (Inter)</option>
+                        <option value="font-mono">Monospace (JetBrains Mono)</option>
+                        <option value="font-serif">Serif (System Serif)</option>
+                    </select>
+                </div>
+
+                <!-- Font Size -->
+                <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                        <label class="text-gray-400 font-semibold uppercase tracking-wider">Font Size</label>
+                        <span id="modalFontSizeVal" class="text-blue-400 font-mono">16px</span>
+                    </div>
+                    <input type="range" id="fontSizeRange" min="12" max="28" value="16" class="w-full accent-blue-500 bg-darkBg h-2 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Line Height / Spacing -->
+                <div>
+                    <label class="block text-gray-400 text-xs font-semibold mb-1.5 uppercase tracking-wider">Line Spacing</label>
+                    <select id="lineHeightSelect" class="w-full bg-darkBg border border-darkBorder rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                        <option value="leading-normal">Compact (Normal)</option>
+                        <option value="leading-relaxed" selected>Comfortable (Relaxed)</option>
+                        <option value="leading-loose">Spacious (Loose)</option>
+                    </select>
+                </div>
+
+                <!-- Text Wrap -->
+                <div class="flex items-center justify-between pt-2">
+                    <span class="text-gray-300 font-medium">Word Wrap</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="wordWrapToggle" checked class="sr-only peer">
+                        <div class="w-11 h-6 bg-darkBg peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 border border-darkBorder"></div>
+                    </label>
+                </div>
+            </div>
+            <div class="px-5 py-3 border-t border-darkBorder bg-darkHeader flex justify-end">
+                <button id="saveSettingsBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold transition-colors">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Note Item Options Context Menu -->
+    <div id="sidebarItemContextMenu" class="hidden fixed bg-darkCard border border-darkBorder rounded-xl shadow-2xl z-[70] overflow-hidden py-1 w-40 text-xs animate-fadeIn select-none">
+        <button id="ctxExportBtn" class="w-full px-3 py-2 text-left text-gray-300 hover:bg-darkBorder hover:text-white flex items-center gap-2 transition-colors">
+            <i data-lucide="download" class="w-3.5 h-3.5 text-blue-400"></i> Export TXT
+        </button>
+        <button id="ctxDuplicateBtn" class="w-full px-3 py-2 text-left text-gray-300 hover:bg-darkBorder hover:text-white flex items-center gap-2 transition-colors">
+            <i data-lucide="copy-plus" class="w-3.5 h-3.5 text-emerald-400"></i> Duplicate
+        </button>
+        <div class="my-1 border-t border-darkBorder/50"></div>
+        <button id="ctxDeleteBtn" class="w-full px-3 py-2 text-left text-red-400 hover:bg-red-950/40 hover:text-red-300 flex items-center gap-2 transition-colors">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5 text-red-400"></i> Delete
+        </button>
+    </div>
+
+    <!-- Custom Confirmation Modal Dialog -->
+    <div id="customConfirmModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[100] animate-fadeIn p-4 select-none">
+        <div class="bg-darkCard border border-darkBorder rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden p-5 flex flex-col items-center text-center space-y-4">
+            <!-- Icon Container -->
+            <div id="confirmModalIconBg" class="w-12 h-12 rounded-full bg-red-950/60 border border-red-800/50 flex items-center justify-center shrink-0">
+                <i data-lucide="trash-2" id="confirmModalIcon" class="w-6 h-6 text-red-400"></i>
+            </div>
+            
+            <!-- Content -->
+            <div class="space-y-1">
+                <h3 id="confirmModalTitle" class="text-base font-bold text-white">Delete Notepad</h3>
+                <p id="confirmModalMessage" class="text-xs text-gray-400 leading-relaxed px-2">Are you sure you want to delete this notepad? This action cannot be undone.</p>
+            </div>
+            
+            <!-- Actions -->
+            <div class="flex items-center justify-center gap-3 w-full pt-1">
+                <button id="confirmModalCancelBtn" class="flex-1 py-2 px-4 bg-darkBg hover:bg-darkBorder border border-darkBorder rounded-xl text-xs font-semibold text-gray-300 transition-colors">
+                    Cancel
+                </button>
+                <button id="confirmModalOkBtn" class="flex-1 py-2 px-4 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-red-600/30 transition-all">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JS App -->
+    <script src="js/app.js"></script>
+</body>
+</html>

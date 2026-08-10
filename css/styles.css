@@ -1,0 +1,489 @@
+/* Theme Transition Animations & Variables */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- LIGHT MODE COMPREHENSIVE UI SYSTEM --- */
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) body.bg-darkBg {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+/* --- PREMIUM GLOWING SEARCH MATCH HIGHLIGHT SYSTEM --- */
+#richEditor mark.search-highlight,
+mark.search-highlight {
+    background-color: #f59e0b !important;
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    padding: 1px 5px !important;
+    margin: 0 1px !important;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4) !important;
+    display: inline-block !important;
+    line-height: 1.2 !important;
+    transition: all 0.2s ease !important;
+}
+
+#richEditor mark.search-highlight-active,
+mark.search-highlight-active {
+    background-color: #2563eb !important;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 4px !important;
+    padding: 2px 6px !important;
+    margin: 0 1px !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4), 0 0 16px rgba(59, 130, 246, 0.75) !important;
+    display: inline-block !important;
+    line-height: 1.2 !important;
+    animation: activeMatchPulse 1.6s infinite ease-in-out !important;
+    z-index: 10 !important;
+    position: relative !important;
+}
+
+@keyframes activeMatchPulse {
+    0% {
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.7), 0 0 18px rgba(59, 130, 246, 0.9);
+        transform: scale(1.03);
+    }
+    100% {
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.6);
+        transform: scale(1);
+    }
+}
+
+html:not(.dark) #richEditor mark.search-highlight,
+html:not(.dark) mark.search-highlight {
+    background-color: #fef08a !important;
+    background: #fef08a !important;
+    color: #713f12 !important;
+    border: 1px solid #eab308 !important;
+    box-shadow: 0 1px 4px rgba(234, 179, 8, 0.3) !important;
+}
+
+html:not(.dark) #richEditor mark.search-highlight-active,
+html:not(.dark) mark.search-highlight-active {
+    background-color: #2563eb !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border: 1px solid #1d4ed8 !important;
+    box-shadow: 0 0 0 3px #93c5fd, 0 3px 10px rgba(37, 99, 235, 0.4) !important;
+}
+
+html:not(.dark) header {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) aside#sidebar {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) main {
+    background-color: #ffffff !important;
+}
+
+html:not(.dark) #editor,
+html:not(.dark) #richEditor {
+    color: #0f172a !important;
+}
+
+html:not(.dark) #richEditor h1,
+html:not(.dark) #richEditor h2,
+html:not(.dark) #richEditor h3,
+html:not(.dark) #richEditor b,
+html:not(.dark) #richEditor strong {
+    color: #0f172a !important;
+}
+
+html:not(.dark) #richEditor p {
+    color: #334155 !important;
+}
+
+/* Background & Borders */
+html:not(.dark) .bg-darkCard,
+html:not(.dark) .bg-darkHeader,
+html:not(.dark) .bg-darkSidebar,
+html:not(.dark) .bg-darkHeader\/50,
+html:not(.dark) .bg-darkCard\/90 {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+html:not(.dark) .bg-darkBg {
+    background-color: #f1f5f9 !important;
+}
+
+html:not(.dark) .border-darkBorder,
+html:not(.dark) .border-darkBorder\/50,
+html:not(.dark) .border-darkBorder\/60,
+html:not(.dark) .border-darkBorder\/40,
+html:not(.dark) .border-darkBorder\/30 {
+    border-color: #e2e8f0 !important;
+}
+
+/* Text Colors */
+html:not(.dark) .text-gray-200,
+html:not(.dark) .text-gray-300,
+html:not(.dark) .text-gray-400 {
+    color: #475569 !important;
+}
+
+html:not(.dark) .text-gray-500 {
+    color: #64748b !important;
+}
+
+html:not(.dark) .text-white:not(.bg-blue-600):not(.bg-blue-500) {
+    color: #0f172a !important;
+}
+
+/* Active Blue Buttons in Light Mode */
+html:not(.dark) .bg-blue-600,
+html:not(.dark) #modePlainBtn.bg-blue-600,
+html:not(.dark) #modeRichBtn.bg-blue-600 {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+/* Clean Format Button in Light Mode */
+html:not(.dark) #cleanFormatBtn {
+    background-color: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    color: #2563eb !important;
+}
+
+html:not(.dark) #cleanFormatBtn:hover {
+    background-color: #dbeafe !important;
+    color: #1d4ed8 !important;
+}
+
+/* Format controls (Bold, Italic, Underline) in Light Mode */
+html:not(.dark) #richToolbarControls button {
+    color: #334155 !important;
+}
+
+html:not(.dark) #richToolbarControls button:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+/* Active Sidebar Note Item in Light Mode */
+html:not(.dark) .note-item-active {
+    background-color: #eff6ff !important;
+    border-left: 3px solid #2563eb !important;
+    border-color: #bfdbfe !important;
+    color: #1e40af !important;
+}
+
+html:not(.dark) .note-item-active span {
+    color: #1e3a8a !important;
+}
+
+/* Hover States in Light Mode */
+html:not(.dark) .hover\:bg-darkBorder:hover,
+html:not(.dark) .hover\:bg-darkCard:hover,
+html:not(.dark) .hover\:bg-darkBorder\/60:hover {
+    background-color: #f1f5f9 !important;
+}
+
+html:not(.dark) .hover\:text-white:hover {
+    color: #0f172a !important;
+}
+
+/* Inputs & Modals in Light Mode */
+html:not(.dark) #noteTitleInput,
+html:not(.dark) #searchInput,
+html:not(.dark) #replaceInput,
+html:not(.dark) #sidebarSearchInput,
+html:not(.dark) #fontFamilySelect,
+html:not(.dark) #lineHeightSelect {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Floating Stats Badge in Light Mode */
+html:not(.dark) #charCount,
+html:not(.dark) #wordCount,
+html:not(.dark) #lineCount {
+    color: #0f172a !important;
+}
+
+/* Dropdown Menu in Light Mode */
+html:not(.dark) #noteDropdownMenu,
+html:not(.dark) #searchBar,
+html:not(.dark) #settingsModal > div {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Scrollbar in Light Mode */
+html:not(.dark) ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Theme Icon Flip Animation */
+@keyframes themeFlip {
+    0% {
+        transform: rotate(0deg) scale(0.5);
+        opacity: 0.2;
+    }
+    50% {
+        transform: rotate(180deg) scale(1.25);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+    }
+}
+
+.theme-animate {
+    animation: themeFlip 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Custom scrollbar for webkit browsers */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0e1015;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #272b38;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+}
+
+/* Textarea focus styling */
+textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Base input touch fixes for mobile iOS safari */
+input[type="text"], textarea, select {
+    font-size: 16px; /* Prevents auto zoom on mobile browsers */
+}
+
+@media (min-width: 640px) {
+    input[type="text"], select {
+        font-size: 14px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.15s ease-out forwards;
+}
+
+/* Mobile Sidebar & Drawer responsive handling */
+@media (max-width: 767px) {
+    aside#sidebar {
+        transform: translateX(-100%);
+    }
+    
+    aside#sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    #sidebarBackdrop.active {
+        display: block !important;
+        opacity: 1 !important;
+    }
+}
+
+@media (min-width: 768px) {
+    aside#sidebar.collapsed {
+        margin-left: -16rem; /* -w-64 */
+    }
+}
+
+/* Font Serifs override */
+.font-serif {
+    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+/* Smooth active state highlights for notes list */
+.note-item-active {
+    background-color: #1a1d26 !important;
+    border-left: 3px solid #3b82f6 !important;
+}
+
+/* Rich Text Editor Styling (ChatGPT style headings, bold text, lists) */
+#richEditor:focus {
+    outline: none !important;
+}
+
+/* Ensure pasted text never retains unwanted background highlights */
+#richEditor *:not(mark):not(.search-highlight):not(.search-highlight-active) {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+#richEditor h1 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+#richEditor h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+    color: #ffffff;
+    line-height: 1.35;
+}
+
+#richEditor h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 0.85rem;
+    margin-bottom: 0.35rem;
+    color: #f3f4f6;
+}
+
+#richEditor p {
+    margin-bottom: 0.75rem;
+    line-height: 1.65;
+    color: #e5e7eb;
+}
+
+#richEditor b, #richEditor strong {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+#richEditor i, #richEditor em {
+    font-style: italic;
+}
+
+#richEditor ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+#richEditor ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+#richEditor blockquote {
+    border-left: 3px solid #3b82f6;
+    padding-left: 0.75rem;
+    color: #9ca3af;
+    margin-bottom: 0.75rem;
+}
+
+#richEditor a {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+/* Custom Confirm Modal & Context Menu Light Mode Styles */
+html:not(.dark) #customConfirmModal > div,
+html:not(.dark) #sidebarItemContextMenu {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+}
+
+html:not(.dark) #confirmModalTitle {
+    color: #0f172a !important;
+}
+
+html:not(.dark) #confirmModalMessage {
+    color: #475569 !important;
+}
+
+html:not(.dark) #confirmModalCancelBtn {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #334155 !important;
+}
+
+html:not(.dark) #confirmModalCancelBtn:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+html:not(.dark) #sidebarItemContextMenu button {
+    color: #334155 !important;
+}
+
+html:not(.dark) #sidebarItemContextMenu button:hover {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+html:not(.dark) #sidebarItemContextMenu #ctxDeleteBtn {
+    color: #dc2626 !important;
+}
+
+html:not(.dark) #sidebarItemContextMenu #ctxDeleteBtn:hover {
+    background-color: #fef2f2 !important;
+    color: #b91c1c !important;
+}
+
+/* Placeholder for contenteditable */
+#richEditor[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #4b5563;
+    cursor: text;
+}
+
+
