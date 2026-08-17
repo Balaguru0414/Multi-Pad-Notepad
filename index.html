@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notepad - Offline Multiple Text Editor</title>
-    <meta name="description" content="A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.">
-    <meta name="keywords" content="notepad, text editor, offline notepad, multi pad notepad, notes app, online notepad, privacy text editor">
+    <title>Multi-Pad Notepad - Free Online & Offline Text Editor</title>
+    <meta name="description" content="Multi-Pad Notepad is a clean, fast, offline-first multiple notepad text editor with instant local auto-save, rich text formatting, and privacy protection.">
+    <meta name="keywords" content="multi pad notepad, notepad, online notepad, offline text editor, multiple notes, privacy text editor, rich text editor, localstorage notepad, notes app">
     <meta name="author" content="Balaguru">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://balaguru0414.github.io/Multi-Pad-Notepad/">
@@ -13,28 +13,31 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Multi-Pad Notepad">
     <meta property="og:url" content="https://balaguru0414.github.io/Multi-Pad-Notepad/">
-    <meta property="og:title" content="Notepad - Offline Multiple Text Editor">
-    <meta property="og:description" content="A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.">
-    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:title" content="Multi-Pad Notepad - Free Online & Offline Text Editor">
+    <meta property="og:description" content="A clean, fast, offline-first multiple notepad text editor with instant local auto-save and rich text formatting.">
+    <meta property="og:image" content="https://balaguru0414.github.io/Multi-Pad-Notepad/assets/logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://balaguru0414.github.io/Multi-Pad-Notepad/">
-    <meta property="twitter:title" content="Notepad - Offline Multiple Text Editor">
-    <meta property="twitter:description" content="A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.">
-    <meta property="twitter:image" content="assets/logo.png">
+    <meta property="twitter:title" content="Multi-Pad Notepad - Free Online & Offline Text Editor">
+    <meta property="twitter:description" content="A clean, fast, offline-first multiple notepad text editor with instant local auto-save and rich text formatting.">
+    <meta property="twitter:image" content="https://balaguru0414.github.io/Multi-Pad-Notepad/assets/logo.png">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Notepad - Offline Multiple Text Editor",
+      "name": "Multi-Pad Notepad",
+      "alternateName": ["Notepad", "Multi Pad Notepad"],
       "url": "https://balaguru0414.github.io/Multi-Pad-Notepad/",
-      "description": "A clean, fast, offline multiple notepad with local storage auto-save and plain text paste enforcement.",
+      "description": "Multi-Pad Notepad is a clean, fast, offline-first multiple notepad text editor with instant local auto-save, rich text formatting, and privacy protection.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5 local storage support.",
       "author": {
         "@type": "Person",
         "name": "Balaguru",
@@ -107,11 +110,11 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div id="noteDropdownMenu" class="hidden absolute top-full left-0 mt-1.5 w-72 max-w-[90vw] bg-darkCard border border-darkBorder rounded-xl shadow-2xl z-50 overflow-hidden py-1">
+                <div id="noteDropdownMenu" class="hidden fixed sm:absolute top-14 sm:top-full left-3 sm:left-0 right-3 sm:right-auto mt-1.5 sm:w-[280px] max-w-[calc(100vw-1.5rem)] bg-darkCard border border-darkBorder rounded-xl shadow-2xl z-[60] overflow-hidden py-1">
                     <div class="px-3 py-2 border-b border-darkBorder flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Rename Current Notepad</span>
-                            <button id="dropdownNewNoteBtn" class="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1">
+                            <span class="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider truncate">Rename Current Notepad</span>
+                            <button id="dropdownNewNoteBtn" class="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 shrink-0 ml-1">
                                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> New
                             </button>
                         </div>
@@ -184,7 +187,7 @@
     </header>
 
     <!-- VS Code Style Floating Find & Replace Widget -->
-    <div id="searchBar" class="hidden absolute top-16 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-8 w-[94%] sm:w-[92%] max-w-md bg-darkCard/95 backdrop-blur-md border border-darkBorder rounded-xl shadow-2xl z-[55] p-2.5 flex flex-col gap-2 animate-fadeIn select-none">
+    <div id="searchBar" class="hidden fixed sm:absolute top-14 sm:top-16 left-2 right-2 sm:left-auto sm:right-8 w-auto sm:w-[92%] max-w-md bg-darkCard/95 backdrop-blur-md border border-darkBorder rounded-xl shadow-2xl z-[70] p-2.5 flex flex-col gap-2 animate-fadeIn select-none">
         <!-- Row 1: Find Input + Toggle Actions + Status + Arrows + Close -->
         <div class="flex items-center gap-1.5">
             <!-- Expand/Collapse Replace Drawer Arrow -->
